@@ -123,8 +123,13 @@ function sendMessage(roomid, data) {
  * 并根据信令更新状态
 */
 function conn() {
-    //连接信令服务器
-    socket = io.connect();
+
+    //连接信令服务器, //连接服务端，因为本机使用localhost 所以connect(url)中url可以不填或写 http://localhost
+    socket = io.connect("https://127.0.0.1:4434",{
+        withCredentials: false,
+    });
+
+    socket.emit('connection', 'room1');
 
     //'joined'消息处理函数
     socket.on('joined',(room, id)=>{
