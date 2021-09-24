@@ -21,7 +21,7 @@ var answer = document.querySelector('textarea#answer');
 
 var pcConfig={
     'iceServers':[{
-        //TUEN服务器地址
+        //TURN服务器地址
         'urls':'turn:xxx.avdancedu.com:3478',
         //TURN服务器用户名
         'username':'xxx',
@@ -109,12 +109,13 @@ function getQueryVariable(variable){
  * 功能：向对端发消息
  * 返回值： 无
 */
-function sendMessage(roomid, data) {
-    console.log('send message to other end',roomid , data);
+function 
+sendMessage(roomid, data) {
+    console.log('send message to other end', roomid, data);
     if(! socket){
         console.log('socket is null');
     }
-    socket.emit('message ', roomid , data);
+    socket.emit('message', roomid , data);
 }
 
 
@@ -125,11 +126,7 @@ function sendMessage(roomid, data) {
 function conn() {
 
     //连接信令服务器, //连接服务端，因为本机使用localhost 所以connect(url)中url可以不填或写 http://localhost
-    socket = io.connect("https://127.0.0.1:4434",{
-        withCredentials: false,
-    });
-
-    socket.emit('connection', 'room1');
+    socket = io.connect("https://127.0.0.1:4434");
 
     //'joined'消息处理函数
     socket.on('joined',(room, id)=>{
@@ -266,7 +263,7 @@ function conn() {
             //如果收到SDP是Answer
             answer.value = data.sdp;
             //进行媒体协商
-            pc.setRemoteDescription(new RTCSessionDescription(data));
+            pc.setRemoteDescription(new RTCSesstionDescription(data));
 
             
         }else if(data.hasOwnProperty('type') && data.type === 'candidate'){
@@ -358,6 +355,7 @@ function start() {
 
         }
 
+        //localhost, 127.0.0.1, https才可以调起摄像头和麦
         navigator.mediaDevices.getUserMedia(constrains)
             .then(getMediaStream)
             .catch(handleError);
